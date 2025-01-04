@@ -1,29 +1,19 @@
 import { Link } from "react-router";
 import { useState, useEffect } from "react";
-import {
-  ChevronDown,
-  ChevronLeft,
-  ChevronRight,
-  ChevronUp,
-  Save,
-} from "lucide-react";
+import { ChevronDown, ChevronUp, Save } from "lucide-react";
 
 export default function Contacts() {
   const [contacts, setContacts] = useState([]);
-  const [emailSortDirection, setEmailSortDirection] = useState("");
+  const [sorting, setSorting] = useState({
+    field: "first_name",
+    order: "DESC",
+  });
 
-  const toggleEmailSortDirection = () => {
-    if (emailSortDirection == "") {
-      setEmailSortDirection("down");
-    } else if (emailSortDirection == "down") {
-      setEmailSortDirection("up");
-    } else {
-      setEmailSortDirection("");
-    }
-  };
   const getContacts = async () => {
     try {
-      const response = await fetch("http://localhost:8080/contacts/");
+      const response = await fetch(
+        `http://localhost:8080/contacts?sortField=${sorting.field}&sortOrder=${sorting.order}`
+      );
       const jsonResponse = await response.json();
       setContacts(jsonResponse);
       console.log(contacts);
@@ -34,7 +24,23 @@ export default function Contacts() {
 
   useEffect(() => {
     getContacts();
-  }, []);
+  }, [sorting]);
+
+  const toggleSort = (field) => {
+    setSorting((prev) => ({
+      field,
+      order: prev.field === field && prev.order === "ASC" ? "DESC" : "ASC",
+    }));
+  };
+
+  const SortIcon = ({ field }) => {
+    if (sorting.field !== field) return null;
+    return sorting.order === "ASC" ? (
+      <ChevronDown className="inline ml-1 w-4 h-4" />
+    ) : (
+      <ChevronUp className="inline ml-1 w-4 h-4" />
+    );
+  };
   return (
     <div className="min-h-screen  bg-black text-gray-100 flex flex-col">
       <header className="container mx-auto px-4 py-8">
@@ -51,7 +57,7 @@ export default function Contacts() {
       <main className="container mx-auto px-4 py-8">
         <div className="flex justify-between items-center mb-8">
           <h1 className="text-3xl  font-bold text-white">ALL CONTACTS</h1>
-          <button className="border-gray-600 text-gray-200 hover:bg-gray-800">
+          <button className="border-gray-600 text-gray-200 hover:underline flex items-center">
             <Save className="w-4 h-4 mr-2" />
             SAVE UPDATES
           </button>
@@ -62,20 +68,21 @@ export default function Contacts() {
             <thead>
               <tr className="border-b border-gray-800">
                 <th className="px-6 py-4 text-left font-mono font-medium text-gray-400">
-                  First Name
+                  <button onClick={() => toggleSort("first_name")}>
+                    First Name
+                    <SortIcon field="first_name" />
+                  </button>
                 </th>
                 <th className="px-6 py-4 text-left font-mono font-medium text-gray-400">
-                  Last Name
+                  <button onClick={() => toggleSort("last_name")}>
+                    Last Name
+                    <SortIcon field="last_name" />
+                  </button>
                 </th>
                 <th className="px-6 py-4 text-left font-mono font-medium text-gray-400">
-                  <button onClick={() => toggleEmailSortDirection()}>
+                  <button onClick={() => toggleSort("email")}>
                     Email
-                    {emailSortDirection === "" ? null : emailSortDirection ===
-                      "down" ? (
-                      <ChevronDown className="inline ml-1 w-4 h-4" />
-                    ) : (
-                      <ChevronUp className="inline ml-1 w-4 h-4" />
-                    )}
+                    <SortIcon field="email" />
                   </button>
                 </th>
                 <th className="px-6 py-4 text-left font-mono font-medium text-gray-400">

@@ -38,7 +38,6 @@ getTotalContacts = async (req, res) => {
 };
 
 getContact = async (req, res) => {
-  console.log("fetching contact");
   try {
     const { id } = req.params;
     const contact = await pool.query(

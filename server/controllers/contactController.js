@@ -4,7 +4,7 @@ getAllContacts = async (req, res) => {
   try {
     const {
       sortField = "first_name",
-      sortOrder = "DESC",
+      sortOrder = "ASC",
       currentPage = "",
     } = req.query;
 
@@ -37,7 +37,36 @@ getTotalContacts = async (req, res) => {
   }
 };
 
+getContact = async (req, res) => {
+  console.log("fetching contact");
+  try {
+    const { id } = req.params;
+    const contact = await pool.query(
+      "SELECT * FROM users WHERE contact_id = $1",
+      [id]
+    );
+    res.json(contact.rows);
+  } catch (err) {
+    err.message;
+  }
+};
+
+updateContact = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { first_name, last_name, email } = req.body;
+    const updateContact = await pool.query(
+      "UPDATE users SET first_name = $1, last_name = $2, email = $3 WHERE contact_id = $4",
+      [first_name, last_name, email, id]
+    );
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
 module.exports = {
   getAllContacts,
   getTotalContacts,
+  updateContact,
+  getContact,
 };

@@ -17,6 +17,11 @@ export default function Contacts() {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalRows, setTotalRows] = useState(0);
 
+  const updateContact = async (id) => {
+    const response = await fetch(`http://localhost:8080/contacts/${id}`);
+    const jsonResponse = await response.json();
+    console.log(jsonResponse[0]);
+  };
   const getContacts = async () => {
     try {
       const response = await fetch(
@@ -83,7 +88,7 @@ export default function Contacts() {
       <header className="container mx-auto px-4 py-6 sm:py-8">
         <nav className="flex justify-between items-center">
           <Link href="/">
-            <div className="text-xl sm:text-2xl font-semibold text-white">
+            <div className="text-xl sm:text-3xl font-semibold text-white">
               Orbit
             </div>
           </Link>
@@ -156,7 +161,10 @@ export default function Contacts() {
                     {contact.email}
                   </td>
                   <td className="px-4 sm:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm whitespace-nowrap">
-                    <button className="hover:bg-gray-700 text-gray-200 font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors">
+                    <button
+                      className="hover:bg-gray-700 text-gray-200 font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors"
+                      onClick={() => updateContact(contact.contact_id)}
+                    >
                       Edit
                     </button>
                   </td>

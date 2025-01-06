@@ -1,5 +1,6 @@
+/* eslint-disable no-unused-vars */
 /* eslint-disable react/prop-types */
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 import { useState, useEffect } from "react";
 import EditModal from "./EditModal";
 import CreateModal from "./CreateModal";
@@ -11,11 +12,15 @@ import {
   ChevronRight,
   DeleteIcon,
   Edit2Icon,
+  SaveIcon,
 } from "lucide-react";
 
 export default function Contacts() {
   //holds the list of contacts in the db
   const [contacts, setContacts] = useState([]);
+  //holds the current logged in user
+  const location = useLocation();
+  const { userId, username } = location.state || {};
   //holds the sorting fields for db queries
   const [sorting, setSorting] = useState({
     field: "first_name",
@@ -37,6 +42,9 @@ export default function Contacts() {
     const jsonResponse = await response.json();
     setSelectedContact(jsonResponse);
     setShowEditModal(true);
+  };
+  const handleRefresh = () => {
+    window.location.reload();
   };
 
   //delete contact with the corresponding id
@@ -104,6 +112,7 @@ export default function Contacts() {
   useEffect(() => {
     getContacts();
     getTotalRows();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [sorting, currentPage]);
 
   //toggle the sorting direction and column
@@ -142,14 +151,28 @@ export default function Contacts() {
       <div className="min-h-screen bg-black text-gray-100 flex flex-col">
         <header className="container mx-auto px-4 py-6 sm:py-8">
           <nav className="flex justify-between items-center">
-            <Link href="/">
+            <Link to="/">
               <div className="text-xl sm:text-3xl font-semibold text-white">
                 Orbit
               </div>
             </Link>
-            <button className="px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base border border-gray-600 rounded-md text-gray-200 hover:bg-gray-800 transition-colors">
-              Sign In
-            </button>
+            <div className="text-xl sm:text-xl font-semibold text-white">
+              {username}
+            </div>
+            {!username && (
+              <div className="flex">
+                <Link to="/users/login">
+                  <button className="px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base border border-gray-600 rounded-md text-gray-200 hover:bg-gray-800 transition-colors">
+                    Sign In
+                  </button>
+                </Link>
+                <Link to="/users/signup">
+                  <button className="px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base border border-gray-600 rounded-md text-gray-200 hover:bg-gray-800 transition-colors">
+                    Sign Up
+                  </button>
+                </Link>
+              </div>
+            )}
           </nav>
         </header>
 
@@ -158,13 +181,22 @@ export default function Contacts() {
             <h1 className="text-2xl sm:text-3xl font-bold text-white">
               ALL CONTACTS ({totalRows})
             </h1>
-            <button
-              className="flex items-center text-sm sm:text-base border border-gray-600 rounded-md px-3 py-1 sm:px-4 sm:py-2 text-gray-200 hover:bg-gray-800 transition-colors"
-              onClick={() => handleCreateClick()}
-            >
-              <PlusIcon className="w-4 h-4 mr-2" />
-              ADD CONTACT
-            </button>
+            <div className="flex">
+              <button
+                className="flex items-center text-sm sm:text-base border border-gray-600 rounded-md px-3 py-1 sm:px-4 sm:py-2 text-gray-200 hover:bg-gray-800 transition-colors"
+                onClick={() => handleRefresh()}
+              >
+                <SaveIcon className="w-4 h-4 mr-2" />
+                SAVE
+              </button>
+              <button
+                className="flex items-center text-sm sm:text-base border border-gray-600 rounded-md px-3 py-1 sm:px-4 sm:py-2 text-gray-200 hover:bg-gray-800 transition-colors"
+                onClick={() => handleCreateClick()}
+              >
+                <PlusIcon className="w-4 h-4 mr-2" />
+                ADD
+              </button>
+            </div>
           </div>
 
           <div className="overflow-x-auto rounded-lg">

@@ -6,10 +6,10 @@ export default function Landing() {
       <header className="container mx-auto px-4 py-8">
         <nav className="flex justify-between items-center">
           <Link to="/">
-            <div className="text-2xl font-semibold text-white">Orbit</div>
+            <div className="text-3xl font-semibold text-white">Orbit</div>
           </Link>
           <div>
-            <Link to="/contacts">
+            <Link to="/users/login">
               <button className=" hover:bg-gray-700 text-gray-200 font-semibold py-2 px-4 border border-gray-600 rounded shadow">
                 Sign In
               </button>
@@ -28,7 +28,7 @@ export default function Landing() {
         </p>
         <Link to="/contacts">
           <button className=" hover:bg-gray-700 flex items-center justify-center text-gray-200 font-semibold py-2 px-4 border border-gray-600 rounded shadow ">
-            Sign In
+            Get Started
           </button>
         </Link>
 

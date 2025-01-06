@@ -17,7 +17,7 @@ getAllContacts = async (req, res) => {
     // Validate sort order
     const validOrder = sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
     const query = {
-      text: `SELECT * FROM users ORDER BY ${orderBy} ${validOrder} LIMIT 10 OFFSET ${currentPage} ROWS`,
+      text: `SELECT * FROM user_data ORDER BY ${orderBy} ${validOrder} LIMIT 10 OFFSET ${currentPage} ROWS`,
       values: [],
     };
     const allContacts = await pool.query(query);
@@ -30,7 +30,7 @@ getAllContacts = async (req, res) => {
 
 getTotalContacts = async (req, res) => {
   try {
-    const totalContacts = await pool.query("SELECT COUNT(*) FROM users");
+    const totalContacts = await pool.query("SELECT COUNT(*) FROM user_data");
     res.json(totalContacts);
   } catch (err) {
     console.error(err.message);
@@ -39,10 +39,10 @@ getTotalContacts = async (req, res) => {
 
 createContact = async (req, res) => {
   try {
-    const { first_name, last_name, email } = req.body;
+    const { userId, first_name, last_name, email } = req.body;
     const newContact = await pool.query(
-      "INSERT INTO users (first_name, last_name, email) VALUES ($1, $2, $3)",
-      [first_name, last_name, email]
+      "INSERT INTO user_data (user_id, first_name, last_name, email) VALUES ($1, $2, $3)",
+      [userId, first_name, last_name, email]
     );
     res.json(newContact);
   } catch (err) {
@@ -54,7 +54,7 @@ deleteContact = async (req, res) => {
   try {
     const { id } = req.params;
     const deleteQuery = pool.query(
-      `DELETE FROM users WHERE contact_id = ${id}`
+      `DELETE FROM user_data WHERE contact_id = ${id}`
     );
     res.status(200).json({ success: true, message: "Contact deleted" });
   } catch (err) {
@@ -66,7 +66,7 @@ getContact = async (req, res) => {
   try {
     const { id } = req.params;
     const contact = await pool.query(
-      "SELECT * FROM users WHERE contact_id = $1",
+      "SELECT * FROM user_data WHERE contact_id = $1",
       [id]
     );
     res.json(contact.rows);
@@ -80,7 +80,7 @@ updateContact = async (req, res) => {
     const { id } = req.params;
     const { first_name, last_name, email } = req.body;
     const updateContact = await pool.query(
-      "UPDATE users SET first_name = $1, last_name = $2, email = $3 WHERE contact_id = $4",
+      "UPDATE user_data SET first_name = $1, last_name = $2, email = $3 WHERE contact_id = $4",
       [first_name, last_name, email, id]
     );
     res.json(updateContact);

@@ -144,6 +144,7 @@ export default function Contacts() {
       )}
       {showCreateModal && (
         <CreateModal
+          userId={userId}
           onClose={() => setShowCreateModal(false)}
           onUpdate={() => getContacts()}
         />

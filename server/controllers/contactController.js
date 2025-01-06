@@ -41,8 +41,8 @@ createContact = async (req, res) => {
   try {
     const { userId, first_name, last_name, email } = req.body;
     const newContact = await pool.query(
-      "INSERT INTO user_data (user_id, first_name, last_name, email) VALUES ($1, $2, $3)",
-      [userId, first_name, last_name, email]
+      "INSERT INTO user_data (first_name, last_name, email, user_id) VALUES ($1, $2, $3, $4)",
+      [first_name, last_name, email, userId]
     );
     res.json(newContact);
   } catch (err) {

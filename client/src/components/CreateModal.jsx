@@ -2,7 +2,7 @@
 import { X } from "lucide-react";
 import { useState } from "react";
 
-export default function CreateModal({ onClose, onUpdate }) {
+export default function CreateModal({ userId, onClose, onUpdate }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -11,6 +11,7 @@ export default function CreateModal({ onClose, onUpdate }) {
     e.preventDefault();
     try {
       const body = {
+        user_id: userId,
         first_name: firstName,
         last_name: lastName,
         email,

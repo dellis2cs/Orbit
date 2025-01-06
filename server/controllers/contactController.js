@@ -50,8 +50,16 @@ createContact = async (req, res) => {
   }
 };
 
-deleteContact = async(req, res) = {
-  
+deleteContact = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const deleteQuery = pool.query(
+      `DELETE FROM users WHERE contact_id = ${id}`
+    );
+    res.status(200).json({ success: true, message: "Contact deleted" });
+  } catch (err) {
+    console.error(err.message);
+  }
 };
 
 getContact = async (req, res) => {
@@ -87,4 +95,5 @@ module.exports = {
   updateContact,
   getContact,
   createContact,
+  deleteContact,
 };

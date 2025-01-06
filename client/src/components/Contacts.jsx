@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Link } from "react-router";
 import { useState, useEffect } from "react";
 import EditModal from "./EditModal";
@@ -8,20 +9,29 @@ import {
   PlusIcon,
   ChevronLeft,
   ChevronRight,
+  DeleteIcon,
+  Edit2Icon,
 } from "lucide-react";
 
 export default function Contacts() {
+  //holds the list of contacts in the db
   const [contacts, setContacts] = useState([]);
+  //holds the sorting fields for db queries
   const [sorting, setSorting] = useState({
     field: "first_name",
     order: "DESC",
   });
+  //holds the current page
   const [currentPage, setCurrentPage] = useState(0);
+  //holds the total db entries
   const [totalRows, setTotalRows] = useState(0);
+  //controls whether the modals are showing
   const [showEditModal, setShowEditModal] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
+  //holds the selected contact for editing
   const [selectedContact, setSelectedContact] = useState(null);
 
+  //edit the selected contact
   const handleEditClick = async (id) => {
     const response = await fetch(`http://localhost:8080/contacts/${id}`);
     const jsonResponse = await response.json();
@@ -29,9 +39,24 @@ export default function Contacts() {
     setShowEditModal(true);
   };
 
+  //delete contact with the corresponding id
+  const handleDeleteCLick = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:8080/contacts/${id}`, {
+        method: "DELETE",
+      });
+    } catch (err) {
+      console.error(err.message);
+    }
+    getContacts();
+  };
+
+  //show the add modal
   const handleCreateClick = () => {
     setShowCreateModal(true);
   };
+
+  //fetch all contacts from db
   const getContacts = async () => {
     try {
       const response = await fetch(
@@ -46,6 +71,7 @@ export default function Contacts() {
     }
   };
 
+  //fetch the total rows from the db
   const getTotalRows = async () => {
     try {
       const response = await fetch("http://localhost:8080/contacts/count");
@@ -57,6 +83,7 @@ export default function Contacts() {
     }
   };
 
+  //move to the next page
   const increasePage = () => {
     if (totalRows - currentPage * 11 > 1) {
       let prevPage = currentPage;
@@ -64,6 +91,8 @@ export default function Contacts() {
       setCurrentPage(newPage);
     }
   };
+
+  //go back to the previous page
   const decreasePage = () => {
     if (currentPage > 0) {
       let prevPage = currentPage;
@@ -77,6 +106,7 @@ export default function Contacts() {
     getTotalRows();
   }, [sorting, currentPage]);
 
+  //toggle the sorting direction and column
   const toggleSort = (field) => {
     setSorting((prev) => ({
       field,
@@ -84,6 +114,7 @@ export default function Contacts() {
     }));
   };
 
+  //handle the sorting icon based on the sorting direction
   const SortIcon = ({ field }) => {
     if (sorting.field !== field) return null;
     return sorting.order === "ASC" ? (
@@ -125,7 +156,7 @@ export default function Contacts() {
         <main className="container mx-auto px-4 py-6 sm:py-8 flex-grow">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4 sm:gap-0">
             <h1 className="text-2xl sm:text-3xl font-bold text-white">
-              ALL CONTACTS
+              ALL CONTACTS ({totalRows})
             </h1>
             <button
               className="flex items-center text-sm sm:text-base border border-gray-600 rounded-md px-3 py-1 sm:px-4 sm:py-2 text-gray-200 hover:bg-gray-800 transition-colors"
@@ -189,10 +220,16 @@ export default function Contacts() {
                     </td>
                     <td className="px-4 sm:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm whitespace-nowrap">
                       <button
-                        className="hover:bg-gray-700 text-gray-200 font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors"
+                        className="hover:bg-gray-700 text-gray-200 font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors flex "
                         onClick={() => handleEditClick(contact.contact_id)}
                       >
-                        Edit
+                        <Edit2Icon className="w-6 h-4 " />
+                      </button>
+                      <button
+                        className="hover:bg-gray-700 text-gray-200 font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors"
+                        onClick={() => handleDeleteCLick(contact.contact_id)}
+                      >
+                        <DeleteIcon className="w-6 h-4 " />
                       </button>
                     </td>
                   </tr>

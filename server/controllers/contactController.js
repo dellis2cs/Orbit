@@ -37,6 +37,23 @@ getTotalContacts = async (req, res) => {
   }
 };
 
+createContact = async (req, res) => {
+  try {
+    const { first_name, last_name, email } = req.body;
+    const newContact = await pool.query(
+      "INSERT INTO users (first_name, last_name, email) VALUES ($1, $2, $3)",
+      [first_name, last_name, email]
+    );
+    res.json(newContact);
+  } catch (err) {
+    console.error(err.message);
+  }
+};
+
+deleteContact = async(req, res) = {
+  
+};
+
 getContact = async (req, res) => {
   try {
     const { id } = req.params;
@@ -58,6 +75,7 @@ updateContact = async (req, res) => {
       "UPDATE users SET first_name = $1, last_name = $2, email = $3 WHERE contact_id = $4",
       [first_name, last_name, email, id]
     );
+    res.json(updateContact);
   } catch (err) {
     console.error(err.message);
   }
@@ -68,4 +86,5 @@ module.exports = {
   getTotalContacts,
   updateContact,
   getContact,
+  createContact,
 };

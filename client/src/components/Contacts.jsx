@@ -1,7 +1,7 @@
 import { Link } from "react-router";
 import { useState, useEffect } from "react";
 import EditModal from "./EditModal";
-
+import CreateModal from "./CreateModal";
 import {
   ChevronDown,
   ChevronUp,
@@ -19,6 +19,7 @@ export default function Contacts() {
   const [currentPage, setCurrentPage] = useState(0);
   const [totalRows, setTotalRows] = useState(0);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
   const [selectedContact, setSelectedContact] = useState(null);
 
   const handleEditClick = async (id) => {
@@ -26,6 +27,10 @@ export default function Contacts() {
     const jsonResponse = await response.json();
     setSelectedContact(jsonResponse);
     setShowEditModal(true);
+  };
+
+  const handleCreateClick = () => {
+    setShowCreateModal(true);
   };
   const getContacts = async () => {
     try {
@@ -97,6 +102,12 @@ export default function Contacts() {
           onUpdate={() => getContacts()}
         />
       )}
+      {showCreateModal && (
+        <CreateModal
+          onClose={() => setShowCreateModal(false)}
+          onUpdate={() => getContacts()}
+        />
+      )}
       <div className="min-h-screen bg-black text-gray-100 flex flex-col">
         <header className="container mx-auto px-4 py-6 sm:py-8">
           <nav className="flex justify-between items-center">
@@ -116,7 +127,10 @@ export default function Contacts() {
             <h1 className="text-2xl sm:text-3xl font-bold text-white">
               ALL CONTACTS
             </h1>
-            <button className="flex items-center text-sm sm:text-base border border-gray-600 rounded-md px-3 py-1 sm:px-4 sm:py-2 text-gray-200 hover:bg-gray-800 transition-colors">
+            <button
+              className="flex items-center text-sm sm:text-base border border-gray-600 rounded-md px-3 py-1 sm:px-4 sm:py-2 text-gray-200 hover:bg-gray-800 transition-colors"
+              onClick={() => handleCreateClick()}
+            >
               <PlusIcon className="w-4 h-4 mr-2" />
               ADD CONTACT
             </button>

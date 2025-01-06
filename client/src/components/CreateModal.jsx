@@ -1,18 +1,12 @@
 /* eslint-disable react/prop-types */
 import { X } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-export default function EditModal({ contact, onClose, onUpdate }) {
-  const [firstName, setFirstName] = useState(contact?.first_name || "");
-  const [lastName, setLastName] = useState(contact?.last_name || "");
-  const [email, setEmail] = useState(contact?.email || "");
-  const [contactId, setContactId] = useState(contact?.contact_id || "");
-  useEffect(() => {
-    setFirstName(contact[0]?.first_name || "");
-    setLastName(contact[0]?.last_name || "");
-    setEmail(contact[0]?.email || "");
-    setContactId(contact[0]?.contact_id || "");
-  }, [contact]);
+export default function CreateModal({ onClose, onUpdate }) {
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [email, setEmail] = useState("");
+
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
@@ -20,10 +14,9 @@ export default function EditModal({ contact, onClose, onUpdate }) {
         first_name: firstName,
         last_name: lastName,
         email,
-        contact_id: contactId,
       };
-      await fetch(`http://localhost:8080/contacts/${contactId}`, {
-        method: "PUT",
+      await fetch(`http://localhost:8080/contacts/new`, {
+        method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(body),
       });
@@ -41,7 +34,7 @@ export default function EditModal({ contact, onClose, onUpdate }) {
       <div className="bg-black backdrop-blur w-full max-w-md rounded-lg shadow-lg overflow-hidden border border-gray-800">
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b border-gray-800">
-          <h2 className="text-xl font-semibold text-white">Edit Contact</h2>
+          <h2 className="text-xl font-semibold text-white">Add Contact</h2>
           {/* Close button */}
           <button
             className="text-gray-400 hover:text-white transition-colors"

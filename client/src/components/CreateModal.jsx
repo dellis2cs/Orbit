@@ -1,26 +1,31 @@
 /* eslint-disable react/prop-types */
 import { X } from "lucide-react";
 import { useState } from "react";
+import { useNavigate } from "react-router";
 
 export default function CreateModal({ userId, onClose, onUpdate }) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
-
+  const navigate = useNavigate();
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
       const body = {
-        user_id: userId,
         first_name: firstName,
         last_name: lastName,
         email,
+        user_id: userId,
       };
-      await fetch(`http://localhost:8080/contacts/new`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
+      if (userId) {
+        await fetch(`http://localhost:8080/contacts/new`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(body),
+        });
+      } else {
+        navigate("/users/login");
+      }
       if (onUpdate) {
         onUpdate();
       }

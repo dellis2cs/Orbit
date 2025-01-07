@@ -30,7 +30,11 @@ getAllContacts = async (req, res) => {
 
 getTotalContacts = async (req, res) => {
   try {
-    const totalContacts = await pool.query("SELECT COUNT(*) FROM user_data");
+    const { user_id } = req.body;
+    const totalContacts = await pool.query(
+      `SELECT COUNT(*) FROM user_data WHERE user_id = $1`,
+      [user_id]
+    );
     res.json(totalContacts);
   } catch (err) {
     console.error(err.message);
@@ -39,10 +43,11 @@ getTotalContacts = async (req, res) => {
 
 createContact = async (req, res) => {
   try {
-    const { userId, first_name, last_name, email } = req.body;
+    const { first_name, last_name, email, user_id } = req.body;
+    console.log(user_id);
     const newContact = await pool.query(
       "INSERT INTO user_data (first_name, last_name, email, user_id) VALUES ($1, $2, $3, $4)",
-      [first_name, last_name, email, userId]
+      [first_name, last_name, email, user_id]
     );
     res.json(newContact);
   } catch (err) {

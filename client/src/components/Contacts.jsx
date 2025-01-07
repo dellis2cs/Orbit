@@ -4,6 +4,7 @@ import { Link, useLocation } from "react-router";
 import { useState, useEffect } from "react";
 import EditModal from "./EditModal";
 import CreateModal from "./CreateModal";
+import { useNavigate } from "react-router";
 import {
   ChevronDown,
   ChevronUp,
@@ -16,8 +17,11 @@ import {
 } from "lucide-react";
 
 export default function Contacts() {
+  const navigate = useNavigate();
   //holds the list of contacts in the db
   const [contacts, setContacts] = useState([]);
+  //holds the filtered contacts with the corresponding user_id
+  const [filteredContacts, setFilteredContacts] = useState([]);
   //holds the current logged in user
   const location = useLocation();
   const { userId, username } = location.state || {};
@@ -64,6 +68,10 @@ export default function Contacts() {
     setShowCreateModal(true);
   };
 
+  const logout = () => {
+    navigate("/users/login");
+  };
+
   //fetch all contacts from db
   const getContacts = async () => {
     try {
@@ -72,8 +80,9 @@ export default function Contacts() {
           sorting.order
         }&currentPage=${currentPage * 10}`
       );
-      const jsonResponse = await response.json();
-      setContacts(jsonResponse);
+      const data = await response.json();
+      setContacts(data);
+      setFilteredContacts(data.filter((item) => item.user_id === userId)); // filter
     } catch (err) {
       console.error(err.message);
     }
@@ -82,7 +91,14 @@ export default function Contacts() {
   //fetch the total rows from the db
   const getTotalRows = async () => {
     try {
-      const response = await fetch("http://localhost:8080/contacts/count");
+      const body = { user_id: userId };
+      const response = await fetch("http://localhost:8080/contacts/count", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(body),
+      });
       const jsonResponse = await response.json();
       let totalRows = jsonResponse.rows[0].count;
       setTotalRows(totalRows);
@@ -158,7 +174,7 @@ export default function Contacts() {
               </div>
             </Link>
             <div className="text-xl sm:text-xl font-semibold text-white">
-              {username}
+              <button onClick={() => logout()}>{username}</button>
             </div>
             {!username && (
               <div className="flex">
@@ -237,7 +253,7 @@ export default function Contacts() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-800">
-                {contacts.map((contact) => (
+                {filteredContacts.map((contact) => (
                   <tr
                     key={contact.contact_id}
                     className="hover:bg-gray-800/50 transition-colors"

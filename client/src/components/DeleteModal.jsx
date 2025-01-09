@@ -5,24 +5,37 @@ export default function DeleteModal({ id, onClose, onUpdate }) {
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
-      await fetch(`http://localhost:8080/contacts/${id}`, {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        return console.error("Unauthorized access");
+      }
+
+      const response = await fetch(`http://localhost:8080/contacts/${id}`, {
         method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
-      if (onUpdate) {
-        onUpdate();
+
+      if (response.ok) {
+        if (onUpdate) {
+          onUpdate();
+        }
+        onClose();
+      } else {
+        console.error("Failed to delete contact");
       }
     } catch (err) {
       console.error(err.message);
-    } finally {
-      onClose();
     }
   };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-black backdrop-blur w-full max-w-md rounded-lg shadow-lg overflow-hidden border border-gray-800">
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b border-gray-800">
-          <h2 className="text-xl font-semibold text-white">Add Contact</h2>
+          <h2 className="text-xl font-semibold text-white">Delete Contact</h2>
           {/* Close button */}
           <button
             className="text-gray-400 hover:text-white transition-colors"

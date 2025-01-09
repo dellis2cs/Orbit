@@ -7,35 +7,49 @@ export default function EditModal({ contact, onClose, onUpdate }) {
   const [lastName, setLastName] = useState(contact?.last_name || "");
   const [email, setEmail] = useState(contact?.email || "");
   const [contactId, setContactId] = useState(contact?.contact_id || "");
+
   useEffect(() => {
     setFirstName(contact[0]?.first_name || "");
     setLastName(contact[0]?.last_name || "");
     setEmail(contact[0]?.email || "");
     setContactId(contact[0]?.contact_id || "");
   }, [contact]);
+
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
-      const body = {
-        first_name: firstName,
-        last_name: lastName,
-        email,
-        contact_id: contactId,
-      };
-      await fetch(`http://localhost:8080/contacts/${contactId}`, {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(body),
-      });
-      if (onUpdate) {
-        onUpdate();
+      const token = localStorage.getItem("token");
+      if (!token) {
+        return console.error("Unauthorized access");
+      }
+
+      const body = { first_name: firstName, last_name: lastName, email };
+
+      const response = await fetch(
+        `http://localhost:8080/contacts/${contactId}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+          body: JSON.stringify(body),
+        }
+      );
+
+      if (response.ok) {
+        if (onUpdate) {
+          onUpdate();
+        }
+        onClose();
+      } else {
+        console.error("Failed to update contact");
       }
     } catch (err) {
       console.error(err.message);
-    } finally {
-      onClose();
     }
   };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-black backdrop-blur w-full max-w-md rounded-lg shadow-lg overflow-hidden border border-gray-800">

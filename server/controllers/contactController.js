@@ -2,6 +2,9 @@ const pool = require("../db/db");
 
 getAllContacts = async (req, res) => {
   try {
+    const userId = req.user.userId; // Get user ID from JWT
+
+    console.log;
     const {
       sortField = "first_name",
       sortOrder = "ASC",
@@ -16,11 +19,14 @@ getAllContacts = async (req, res) => {
 
     // Validate sort order
     const validOrder = sortOrder.toUpperCase() === "ASC" ? "ASC" : "DESC";
+
     const query = {
       text: `SELECT * FROM user_data ORDER BY ${orderBy} ${validOrder} LIMIT 10 OFFSET ${currentPage} ROWS`,
       values: [],
     };
+
     const allContacts = await pool.query(query);
+
     res.json(allContacts.rows);
   } catch (err) {
     console.log(err.message);
@@ -30,10 +36,10 @@ getAllContacts = async (req, res) => {
 
 getTotalContacts = async (req, res) => {
   try {
-    const { user_id } = req.body;
+    const userId = req.user.userId; // Get user ID from JWT
     const totalContacts = await pool.query(
       `SELECT COUNT(*) FROM user_data WHERE user_id = $1`,
-      [user_id]
+      [userId]
     );
     res.json(totalContacts);
   } catch (err) {

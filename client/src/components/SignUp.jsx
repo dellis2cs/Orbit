@@ -7,6 +7,7 @@ export default function SignUp() {
     username: "",
     password: "",
   });
+  const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleInputChange = (e) => {
@@ -29,13 +30,13 @@ export default function SignUp() {
       const data = await response.json();
 
       if (response.ok) {
-        console.log("Sign Up successful:".data);
         navigate("/users/login");
       } else {
-        console.error("sign up failed:", data.error);
+        setError(data.error || "Signup failed");
       }
     } catch (err) {
       console.error(err.message);
+      setError("An error occurred. Please try again.");
     }
   };
 
@@ -45,7 +46,7 @@ export default function SignUp() {
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b border-gray-800">
           <h2 className="text-xl font-semibold text-white">Sign Up</h2>
-          <Link to="/contacts">
+          <Link to="/">
             <button className="text-gray-400 hover:text-white transition-colors">
               <X className="w-6 h-6" />
             </button>
@@ -88,6 +89,7 @@ export default function SignUp() {
                 className="w-full px-3 py-2 bg-black border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
+            {error && <p className="text-red-500">{error}</p>}
           </div>
 
           {/* Buttons */}

@@ -8,33 +8,45 @@ export default function CreateModal({ userId, onClose, onUpdate }) {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const navigate = useNavigate();
+
   const onSubmitForm = async (e) => {
     e.preventDefault();
     try {
+      const token = localStorage.getItem("token");
+      if (!token) {
+        navigate("/users/login"); // Redirect if not logged in
+        return;
+      }
+
       const body = {
         first_name: firstName,
         last_name: lastName,
         email,
         user_id: userId,
       };
-      if (userId) {
-        await fetch(`http://localhost:8080/contacts/new`, {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify(body),
-        });
+
+      const response = await fetch(`http://localhost:8080/contacts/new`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
+        },
+        body: JSON.stringify(body),
+      });
+
+      if (response.ok) {
+        if (onUpdate) {
+          onUpdate();
+        }
+        onClose();
       } else {
-        navigate("/users/login");
-      }
-      if (onUpdate) {
-        onUpdate();
+        console.error("Failed to create contact");
       }
     } catch (err) {
       console.error(err.message);
-    } finally {
-      onClose();
     }
   };
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
       <div className="bg-black backdrop-blur w-full max-w-md rounded-lg shadow-lg overflow-hidden border border-gray-800">
@@ -118,7 +130,7 @@ export default function CreateModal({ userId, onClose, onUpdate }) {
               type="submit"
               className="px-4 py-2 text-sm font-medium text-white border border-gray-500 bg-transparent rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
             >
-              Save Changes
+              Save
             </button>
           </div>
         </form>

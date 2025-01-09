@@ -24,7 +24,7 @@ export default function Contacts() {
   const [filteredContacts, setFilteredContacts] = useState([]);
   //holds the current logged in user
   const location = useLocation();
-  const { userId, username } = location.state || {};
+
   //holds the sorting fields for db queries
   const [sorting, setSorting] = useState({
     field: "first_name",
@@ -40,27 +40,57 @@ export default function Contacts() {
   //holds the selected contact for editing
   const [selectedContact, setSelectedContact] = useState(null);
 
+  // Add token handling
+  const userId = localStorage.getItem("userId");
+  const username = localStorage.getItem("username");
+  const token = localStorage.getItem("token");
+
+  // Redirect to login if no token
+  useEffect(() => {
+    if (!token) {
+      navigate("/users/login");
+    }
+  }, [token, navigate]);
+
   //edit the selected contact
   const handleEditClick = async (id) => {
-    const response = await fetch(`http://localhost:8080/contacts/${id}`);
-    const jsonResponse = await response.json();
-    setSelectedContact(jsonResponse);
-    setShowEditModal(true);
-  };
-  const handleRefresh = () => {
-    window.location.reload();
-  };
-
-  //delete contact with the corresponding id
-  const handleDeleteCLick = async (id) => {
     try {
       const response = await fetch(`http://localhost:8080/contacts/${id}`, {
-        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
+
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        setSelectedContact(jsonResponse[0]); // Assuming response is an array
+        setShowEditModal(true);
+      } else {
+        console.error("Failed to fetch contact");
+      }
     } catch (err) {
       console.error(err.message);
     }
-    getContacts();
+  };
+
+  //delete contact with the corresponding id
+  const handleDeleteClick = async (id) => {
+    try {
+      const response = await fetch(`http://localhost:8080/contacts/${id}`, {
+        method: "DELETE",
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      if (response.ok) {
+        getContacts();
+      } else {
+        console.error("Failed to delete contact");
+      }
+    } catch (err) {
+      console.error(err.message);
+    }
   };
 
   //show the add modal
@@ -69,20 +99,37 @@ export default function Contacts() {
   };
 
   const logout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("username");
     navigate("/users/login");
   };
 
   //fetch all contacts from db
   const getContacts = async () => {
+    // console.log(username);
+    // console.log(userId);
     try {
       const response = await fetch(
         `http://localhost:8080/contacts?sortField=${sorting.field}&sortOrder=${
           sorting.order
-        }&currentPage=${currentPage * 10}`
+        }&currentPage=${currentPage * 10}`,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
       );
-      const data = await response.json();
-      setContacts(data);
-      setFilteredContacts(data.filter((item) => item.user_id === userId)); // filter
+
+      if (response.ok) {
+        const data = await response.json();
+        setContacts(data);
+        setFilteredContacts(
+          data.filter((item) => item.user_id === parseInt(userId))
+        );
+      } else {
+        console.error("Failed to fetch contacts");
+      }
     } catch (err) {
       console.error(err.message);
     }
@@ -91,17 +138,22 @@ export default function Contacts() {
   //fetch the total rows from the db
   const getTotalRows = async () => {
     try {
-      const body = { user_id: userId };
       const response = await fetch("http://localhost:8080/contacts/count", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${token}`,
         },
-        body: JSON.stringify(body),
+        body: JSON.stringify({ user_id: userId }),
       });
-      const jsonResponse = await response.json();
-      let totalRows = jsonResponse.rows[0].count;
-      setTotalRows(totalRows);
+
+      if (response.ok) {
+        const jsonResponse = await response.json();
+        const total = jsonResponse.rows[0]?.count || 0; // Ensure count exists
+        setTotalRows(total);
+      } else {
+        console.error("Failed to fetch total rows");
+      }
     } catch (err) {
       console.error(err.message);
     }
@@ -109,19 +161,15 @@ export default function Contacts() {
 
   //move to the next page
   const increasePage = () => {
-    if (totalRows - currentPage * 11 > 1) {
-      let prevPage = currentPage;
-      let newPage = prevPage + 1;
-      setCurrentPage(newPage);
+    if (totalRows - currentPage * 10 > 10) {
+      setCurrentPage((prevPage) => prevPage + 1);
     }
   };
 
   //go back to the previous page
   const decreasePage = () => {
     if (currentPage > 0) {
-      let prevPage = currentPage;
-      let newPage = prevPage - 1;
-      setCurrentPage(newPage);
+      setCurrentPage((prevPage) => prevPage - 1);
     }
   };
 
@@ -201,13 +249,6 @@ export default function Contacts() {
             <div className="flex">
               <button
                 className="flex items-center text-sm sm:text-base border border-gray-600 rounded-md px-3 py-1 sm:px-4 sm:py-2 text-gray-200 hover:bg-gray-800 transition-colors"
-                onClick={() => handleRefresh()}
-              >
-                <SaveIcon className="w-4 h-4 mr-2" />
-                SAVE
-              </button>
-              <button
-                className="flex items-center text-sm sm:text-base border border-gray-600 rounded-md px-3 py-1 sm:px-4 sm:py-2 text-gray-200 hover:bg-gray-800 transition-colors"
                 onClick={() => handleCreateClick()}
               >
                 <PlusIcon className="w-4 h-4 mr-2" />
@@ -276,7 +317,7 @@ export default function Contacts() {
                       </button>
                       <button
                         className="hover:bg-gray-700 text-gray-200 font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors"
-                        onClick={() => handleDeleteCLick(contact.contact_id)}
+                        onClick={() => handleDeleteClick(contact.contact_id)}
                       >
                         <DeleteIcon className="w-6 h-4 " />
                       </button>

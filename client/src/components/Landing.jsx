@@ -8,7 +8,15 @@ export default function Landing() {
           <Link to="/">
             <div className="text-3xl font-semibold text-white">Orbit</div>
           </Link>
-          <div>
+          <div className="flex gap-3">
+            <Link to="/users/signup">
+              <button
+                type="button"
+                className="hover:bg-gray-700 text-gray-200 font-semibold py-2 px-4 border border-gray-600 rounded shadow"
+              >
+                Sign Up
+              </button>
+            </Link>
             <Link to="/users/login">
               <button className=" hover:bg-gray-700 text-gray-200 font-semibold py-2 px-4 border border-gray-600 rounded shadow">
                 Sign In

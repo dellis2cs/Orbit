@@ -47,13 +47,13 @@ export default function Login() {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
-      <div className="bg-black backdrop-blur w-full max-w-md rounded-lg shadow-lg overflow-hidden border border-gray-800">
+    <div className="fixed inset-0 bg-white bg-opacity-50 flex items-center justify-center p-4">
+      <div className="bg-white backdrop-blur w-full max-w-md rounded-lg shadow-lg overflow-hidden border border-gray-800">
         {/* Header */}
         <div className="flex justify-between items-center p-6 border-b border-gray-800">
-          <h2 className="text-xl font-semibold text-white">Login</h2>
+          <h2 className="text-xl font-semibold text-black">Login</h2>
           <Link to="/">
-            <button className="text-gray-400 hover:text-white transition-colors">
+            <button className="text-gray-400 hover:text-black transition-colors">
               <X className="w-6 h-6" />
             </button>
           </Link>
@@ -75,7 +75,7 @@ export default function Login() {
                 id="username"
                 value={formData.username}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 bg-black border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-white border border-gray-700 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
 
@@ -92,7 +92,7 @@ export default function Login() {
                 id="password"
                 value={formData.password}
                 onChange={handleInputChange}
-                className="w-full px-3 py-2 bg-black border border-gray-700 rounded-md text-white focus:outline-none focus:ring-2 focus:ring-blue-500"
+                className="w-full px-3 py-2 bg-black border border-gray-700 rounded-md text-black focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
             </div>
             {error && <p className="text-red-500">{error}</p>}
@@ -103,7 +103,7 @@ export default function Login() {
             <Link to="/users/signup">
               <button
                 type="button"
-                className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white bg-transparent border border-gray-600 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
+                className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-black bg-transparent border border-gray-600 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
               >
                 Sign Up
               </button>
@@ -111,14 +111,14 @@ export default function Login() {
             <Link to="/">
               <button
                 type="button"
-                className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white bg-transparent border border-gray-600 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
+                className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-black bg-transparent border border-gray-600 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"
               >
                 Cancel
               </button>
             </Link>
             <button
               type="submit"
-              className="px-4 py-2 text-sm font-medium text-white border border-gray-500 bg-transparent rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
+              className="px-4 py-2 text-sm font-medium text-black border border-gray-500 bg-transparent rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-blue-500 transition-colors"
             >
               Login
             </button>

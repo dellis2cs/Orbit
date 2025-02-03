@@ -2,7 +2,7 @@ import FeatureCard from "./FeatureCard";
 import { Link } from "react-router";
 export default function Landing() {
   return (
-    <div className="min-h-screen bg-black text-gray-100 flex flex-col">
+    <div className="min-h-screen bg-white text-black flex flex-col">
       <header className="container mx-auto px-4 py-8">
         <nav className="flex justify-between items-center">
           <Link to="/">
@@ -12,13 +12,13 @@ export default function Landing() {
             <Link to="/users/signup">
               <button
                 type="button"
-                className="hover:bg-gray-700 text-gray-200 font-semibold py-2 px-4 border border-gray-600 rounded shadow"
+                className="hover:bg-gray-700 text-black font-semibold py-2 px-4 border border-gray-600 rounded shadow"
               >
                 Sign Up
               </button>
             </Link>
             <Link to="/users/login">
-              <button className=" hover:bg-gray-700 text-gray-200 font-semibold py-2 px-4 border border-gray-600 rounded shadow">
+              <button className=" hover:bg-gray-700 text-black font-semibold py-2 px-4 border border-gray-600 rounded shadow">
                 Sign In
               </button>
             </Link>
@@ -35,7 +35,7 @@ export default function Landing() {
           Orbit, the future of contact management.
         </p>
         <Link to="/contacts">
-          <button className=" hover:bg-gray-700 flex items-center justify-center text-gray-200 font-semibold py-2 px-4 border border-gray-600 rounded shadow ">
+          <button className=" hover:bg-gray-700 flex items-center justify-center text-black font-semibold py-2 px-4 border border-gray-600 rounded shadow ">
             Get Started
           </button>
         </Link>
@@ -64,13 +64,13 @@ export default function Landing() {
           <div className="space-x-6">
             <a
               href="#"
-              className="text-sm text-gray-400 hover:text-gray-200 transition-colors"
+              className="text-sm text-gray-400 hover:text-black transition-colors"
             >
               Privacy
             </a>
             <a
               href="#"
-              className="text-sm text-gray-400 hover:text-gray-200 transition-colors"
+              className="text-sm text-gray-400 hover:text-black transition-colors"
             >
               Terms
             </a>

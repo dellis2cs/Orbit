@@ -213,26 +213,24 @@ export default function Contacts() {
           onUpdate={() => getContacts()}
         />
       )}
-      <div className="min-h-screen bg-black text-gray-100 flex flex-col">
+      <div className="min-h-screen bg-white text-black flex flex-col">
         <header className="container mx-auto px-4 py-6 sm:py-8">
           <nav className="flex justify-between items-center">
             <Link to="/">
-              <div className="text-xl sm:text-3xl font-semibold text-white">
-                Orbit
-              </div>
+              <div className="text-xl sm:text-3xl font-semibold ">Orbit</div>
             </Link>
-            <div className="text-xl sm:text-xl font-semibold text-white">
+            <div className="text-xl sm:text-xl font-semibold ">
               <button onClick={() => logout()}>{username}</button>
             </div>
             {!username && (
               <div className="flex">
                 <Link to="/users/login">
-                  <button className="px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base border border-gray-600 rounded-md text-gray-200 hover:bg-gray-800 transition-colors">
+                  <button className="px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base border border-gray-600 rounded-md  hover:bg-gray-800 transition-colors">
                     Sign In
                   </button>
                 </Link>
                 <Link to="/users/signup">
-                  <button className="px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base border border-gray-600 rounded-md text-gray-200 hover:bg-gray-800 transition-colors">
+                  <button className="px-3 py-1 sm:px-4 sm:py-2 text-sm sm:text-base border border-gray-600 rounded-md  hover:bg-gray-800 transition-colors">
                     Sign Up
                   </button>
                 </Link>
@@ -243,12 +241,12 @@ export default function Contacts() {
 
         <main className="container mx-auto px-4 py-6 sm:py-8 flex-grow">
           <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 sm:mb-8 gap-4 sm:gap-0">
-            <h1 className="text-2xl sm:text-3xl font-bold text-white">
+            <h1 className="text-2xl sm:text-3xl font-bold ">
               ALL CONTACTS ({totalRows})
             </h1>
             <div className="flex">
               <button
-                className="flex items-center text-sm sm:text-base border border-gray-600 rounded-md px-3 py-1 sm:px-4 sm:py-2 text-gray-200 hover:bg-gray-800 transition-colors"
+                className="flex items-center text-sm sm:text-base border border-gray-600 rounded-md px-3 py-1 sm:px-4 sm:py-2 text-black0 hover:bg-gray-800 transition-colors"
                 onClick={() => handleCreateClick()}
               >
                 <PlusIcon className="w-4 h-4 mr-2" />
@@ -310,13 +308,13 @@ export default function Contacts() {
                     </td>
                     <td className="px-4 sm:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm whitespace-nowrap">
                       <button
-                        className="hover:bg-gray-700 text-gray-200 font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors flex "
+                        className="hover:bg-gray-700 text-black0 font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors flex "
                         onClick={() => handleEditClick(contact.contact_id)}
                       >
                         <Edit2Icon className="w-6 h-4 " />
                       </button>
                       <button
-                        className="hover:bg-gray-700 text-gray-200 font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors"
+                        className="hover:bg-gray-700 text-black0 font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors"
                         onClick={() => handleDeleteClick(contact.contact_id)}
                       >
                         <DeleteIcon className="w-6 h-4 " />

@@ -94,7 +94,7 @@ export default function SignUp() {
 
           {/* Buttons */}
           <div className="flex justify-end space-x-3 px-6 py-4 bg-black">
-            <Link to="/contacts">
+            <Link to="/">
               <button
                 type="button"
                 className="px-4 py-2 text-sm font-medium text-gray-300 hover:text-white bg-transparent border border-gray-600 rounded-md hover:bg-gray-700 focus:outline-none focus:ring-2 focus:ring-gray-500 transition-colors"

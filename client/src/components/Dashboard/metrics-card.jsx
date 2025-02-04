@@ -1,3 +1,4 @@
+/* eslint-disable react/prop-types */
 import { Card } from "../ui/card";
 import { ArrowUpRight } from "lucide-react";
 

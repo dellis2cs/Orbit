@@ -15,6 +15,7 @@ import {
   LifeBuoy,
   Settings,
   Circle,
+  Notebook,
 } from "lucide-react";
 
 export default function Dashboard() {
@@ -72,19 +73,22 @@ export default function Dashboard() {
                 Contacts
               </Button>
             </Link>
-            <Button variant="ghost" className="w-full justify-start gap-2">
-              <Globe className="h-4 w-4" />
-              Calender
-            </Button>
+            <Link to="/calendar">
+              <Button variant="ghost" className="w-full justify-start gap-2">
+                <Globe className="h-4 w-4" />
+                Calender
+              </Button>
+            </Link>
             <Button variant="ghost" className="w-full justify-start gap-2">
               <Home className="h-4 w-4" />
               Solutions
             </Button>
-            <Button variant="ghost" className="w-full justify-start gap-2">
-              <Circle className="h-4 w-4" />
-              Notes
-              <ChevronDown className="ml-auto h-4 w-4" />
-            </Button>
+            <Link to="/notes">
+              <Button variant="ghost" className="w-full justify-start gap-2">
+                <Notebook className="h-4 w-4" />
+                Notes
+              </Button>
+            </Link>
             <Button variant="ghost" className="w-full justify-start gap-2">
               <LifeBuoy className="h-4 w-4" />
               Support

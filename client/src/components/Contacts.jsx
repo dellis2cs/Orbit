@@ -216,7 +216,7 @@ export default function Contacts() {
       <div className="min-h-screen bg-white text-black flex flex-col">
         <header className="container mx-auto px-4 py-6 sm:py-8">
           <nav className="flex justify-between items-center">
-            <Link to="/">
+            <Link to="/dashboard">
               <div className="text-xl sm:text-3xl font-semibold ">Orbit</div>
             </Link>
             <div className="text-xl sm:text-xl font-semibold ">
@@ -246,7 +246,7 @@ export default function Contacts() {
             </h1>
             <div className="flex">
               <button
-                className="flex items-center text-sm sm:text-base border border-gray-600 rounded-md px-3 py-1 sm:px-4 sm:py-2 text-black0 hover:bg-gray-800 transition-colors"
+                className="flex items-center text-sm sm:text-base border border-gray-600 rounded-md px-3 py-1 sm:px-4 sm:py-2 text-black hover:bg-black hover:text-white transition-all duration-200 rounded-md"
                 onClick={() => handleCreateClick()}
               >
                 <PlusIcon className="w-4 h-4 mr-2" />
@@ -295,7 +295,7 @@ export default function Contacts() {
                 {filteredContacts.map((contact) => (
                   <tr
                     key={contact.contact_id}
-                    className="hover:bg-gray-800/50 transition-colors"
+                    className="hover:bg-gray-100 transition-colors"
                   >
                     <td className="px-4 sm:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm whitespace-nowrap">
                       {contact.first_name}
@@ -308,13 +308,13 @@ export default function Contacts() {
                     </td>
                     <td className="px-4 sm:px-6 py-3 sm:py-4 font-mono text-xs sm:text-sm whitespace-nowrap">
                       <button
-                        className="hover:bg-gray-700 text-black0 font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors flex "
+                        className="hover:bg-black hover:text-white text-black font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors flex "
                         onClick={() => handleEditClick(contact.contact_id)}
                       >
                         <Edit2Icon className="w-6 h-4 " />
                       </button>
                       <button
-                        className="hover:bg-gray-700 text-black0 font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors"
+                        className="hover:bg-black hover:text-white text-black font-semibold py-1 px-2 sm:py-2 sm:px-4 text-xs sm:text-sm border border-gray-600 rounded shadow transition-colors"
                         onClick={() => handleDeleteClick(contact.contact_id)}
                       >
                         <DeleteIcon className="w-6 h-4 " />
@@ -327,14 +327,14 @@ export default function Contacts() {
           </div>
           <div className="flex justify-center items-center text-bold gap-3 mt-6">
             <button
-              className="border p-1 sm:p-2 rounded-lg hover:bg-gray-800 transition-colors"
+              className="border p-1 sm:p-2 rounded-lg hover:bg-black hover:text-white transition-colors"
               onClick={() => decreasePage()}
             >
               <ChevronLeft className="w-4 h-4 sm:w-5 sm:h-5" />
             </button>
             <h1 className="text-sm sm:text-base">{currentPage + 1}</h1>
             <button
-              className="border p-1 sm:p-2 rounded-lg hover:bg-gray-800 transition-colors"
+              className="border p-1 sm:p-2 rounded-lg hover:bg-black hover:text-white transition-colors"
               onClick={() => increasePage()}
             >
               <ChevronRight className="w-4 h-4 sm:w-5 sm:h-5" />

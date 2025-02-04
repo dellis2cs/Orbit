@@ -1,6 +1,7 @@
 import { Button } from "./ui/button";
 import { Card } from "./ui/card";
 import { Input } from "./ui/input";
+import { Link } from "react-router";
 import { MetricsCard } from "./Dashboard/metrics-card";
 import { StatsChart } from "./Dashboard/stats-chart";
 import { VaultTable } from "./Dashboard/vault-table";
@@ -53,7 +54,9 @@ export default function Dashboard() {
         <aside className="border-r bg-background/50 backdrop-blur">
           <div className="flex h-16 items-center gap-2 border-b px-6">
             <Circle className="h-6 w-6" />
-            <span className="font-bold">Orbit</span>
+            <Link to="/dashboard">
+              <span className="font-bold">Orbit</span>
+            </Link>
           </div>
           <div className="px-4 py-4">
             <Input placeholder="Search" className="bg-background/50" />
@@ -63,21 +66,23 @@ export default function Dashboard() {
               <LayoutDashboard className="h-4 w-4" />
               Dashboard
             </Button>
-            <Button variant="ghost" className="w-full justify-start gap-2">
-              <BarChart3 className="h-4 w-4" />
-              Contacts
-            </Button>
+            <Link to="/contacts">
+              <Button variant="ghost" className="w-full justify-start gap-2">
+                <BarChart3 className="h-4 w-4" />
+                Contacts
+              </Button>
+            </Link>
             <Button variant="ghost" className="w-full justify-start gap-2">
               <Globe className="h-4 w-4" />
-              Placeholder
+              Calender
             </Button>
             <Button variant="ghost" className="w-full justify-start gap-2">
               <Home className="h-4 w-4" />
-              Placeholder
+              Solutions
             </Button>
             <Button variant="ghost" className="w-full justify-start gap-2">
               <Circle className="h-4 w-4" />
-              Placeholder
+              Notes
               <ChevronDown className="ml-auto h-4 w-4" />
             </Button>
             <Button variant="ghost" className="w-full justify-start gap-2">

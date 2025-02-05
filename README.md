@@ -2,7 +2,7 @@
 
 ## Description
 
-This project is a full-stack platform allowing users to manage their network efficiently and seamlessly, the frontend is a react server connected to a backend express server, and postgreSQL as the database
+This project is a full-stack platform allowing users to manage their leetcode progression efficiently and seamlessly, as well as keep an organized log of their network, and take take notes using my markdown editor. The frontend is a react server connected to a backend express server, and postgreSQL as the database
 ## Features
 - Manage your network by creating new contacts, udating existing ones and deleting old contacts
 

@@ -10,6 +10,7 @@ export default {
     extend: {
       fontFamily: {
         geist: ["Geist"],
+        poppins: ["Poppins"],
       },
       borderRadius: {
         lg: "var(--radius)",
@@ -60,5 +61,5 @@ export default {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [import("tailwindcss-animate"), import("@tailwindcss/typography")],
 };
